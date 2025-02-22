@@ -1,10 +1,7 @@
 import "./sidebar.css";
-import {
-  LineStyle,
-} from "@material-ui/icons";
+import { LineStyle } from "@material-ui/icons";
 import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
-
 
 export default function Sidebar() {
   return (
@@ -21,6 +18,7 @@ export default function Sidebar() {
             </Link>
           </ul>
         </div>
+
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
@@ -53,7 +51,7 @@ export default function Sidebar() {
             <div className="MenuItem">
               <Link to="/departments" className="link">
                 <li className="sidebarListItem">
-                <img src="https://cdn-icons-png.flaticon.com/512/1570/1570896.png" alt="" className="sidebarIcon" />
+                  <img src="https://cdn-icons-png.flaticon.com/512/1570/1570896.png" alt="" className="sidebarIcon" />
                   Departments
                 </li>
               </Link>
@@ -66,7 +64,7 @@ export default function Sidebar() {
             <div className="MenuItem">
               <Link to="/materials" className="link">
                 <li className="sidebarListItem ">
-                <img src="https://cdn-icons-png.flaticon.com/512/2541/2541979.png" alt="" className="sidebarIcon" />
+                  <img src="https://cdn-icons-png.flaticon.com/512/2541/2541979.png" alt="" className="sidebarIcon" />
                   Materials
                 </li>
               </Link>
@@ -79,7 +77,7 @@ export default function Sidebar() {
             <div className="MenuItem">
               <Link to="/societies" className="link">
                 <li className="sidebarListItem">
-                <img src="https://cdn-icons-png.flaticon.com/512/2562/2562464.png" alt="" className="sidebarIcon" />
+                  <img src="https://cdn-icons-png.flaticon.com/512/2562/2562464.png" alt="" className="sidebarIcon" />
                   Societies
                 </li>
               </Link>
@@ -92,7 +90,7 @@ export default function Sidebar() {
             <div className="MenuItem">
               <Link to="/events" className="link">
                 <li className="sidebarListItem">
-                <img src="https://cdn-icons-png.flaticon.com/512/1968/1968790.png" alt="" className="sidebarIcon" />
+                  <img src="https://cdn-icons-png.flaticon.com/512/1968/1968790.png" alt="" className="sidebarIcon" />
                   Events
                 </li>
               </Link>
@@ -102,6 +100,22 @@ export default function Sidebar() {
                 </li>
               </Link>
             </div>
+
+            {/* Announcements Section */}
+            <div className="MenuItem">
+              <Link to="/announcements" className="link">
+                <li className="sidebarListItem">
+                  <img src="https://cdn-icons-png.flaticon.com/512/3214/3214736.png" alt="" className="sidebarIcon" />
+                  Announcements
+                </li>
+              </Link>
+              <Link to="/newannouncement" className="link">
+                <li className="sidebarListItem">
+                  <IoAdd className="sidebarPlusIcon" />
+                </li>
+              </Link>
+            </div>
+
           </ul>
         </div>
       </div>

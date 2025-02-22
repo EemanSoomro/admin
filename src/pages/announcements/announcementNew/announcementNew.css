@@ -1,0 +1,46 @@
+.announcementNew {
+    flex: 4;
+  }
+  
+  .addAnnouncementForm {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .addAnnouncementItem {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 2rem;
+  }
+  
+  .addAnnouncementItem > label {
+    color: gray;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .addAnnouncementItem > input {
+    padding: 10px;
+  }
+  
+  .addAnnouncementItem > select {
+    padding: 10px;
+  }
+  
+  .addAnnouncementButton {
+    margin-top: 10px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: darkblue;
+    color: white;
+    font-weight: 600;
+    height: 40px;
+    width: 120px;
+    cursor: pointer;
+    align-self: center;
+  }
+  

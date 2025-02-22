@@ -22,6 +22,17 @@ import Society from "./society/societyEdit/Society";
 import Event from "./event/eventEdit/Event";
 import NewEvent from "./event/eventNew/NewEvent";
 import EventList from "./event/eventList/EventList";
+import AnnouncementList from "./announcements/announcementsList/AnnouncementsList";  
+import NewAnnouncement from "./announcements/announcementNew/announcementNew";  
+
 import { AuthContext } from "../context/authContext/AuthContext";
-// Export Topbar and Sidebar
-export { Topbar, Sidebar, Home, UserList, User, NewUser, CourseList, Course, NewCourse, TeacherList, Teacher, NewTeacher, MaterialList, Material, NewMaterial, AuthContext, Department, NewDepartment, DepartmentList,SocietyList,NewSociety,Society ,Event,NewEvent,EventList};
+
+// ✅ Full Export List with Announcement Components
+export { 
+    Topbar, Sidebar, Home, UserList, User, NewUser, 
+    CourseList, Course, NewCourse, TeacherList, Teacher, NewTeacher, 
+    MaterialList, Material, NewMaterial, Department, NewDepartment, DepartmentList, 
+    SocietyList, NewSociety, Society, Event, NewEvent, EventList, 
+     AnnouncementList, NewAnnouncement,
+    AuthContext 
+};
