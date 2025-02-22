@@ -1,0 +1,133 @@
+.society {
+    flex: 4;
+    padding: 20px;
+  }
+  
+  .societyTitleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .societyAddButton {
+    width: 80px;
+    border: none;
+    padding: 5px;
+    background-color: teal;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .societyTop {
+    display: flex;
+  }
+  
+  .societyTopLeft,
+  .societyTopRight {
+    flex: 1;
+  }
+  
+  .societyTopRight {
+    padding: 20px;
+    margin: 20px;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  }
+  
+  .societyInfoImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .societyInfoTop {
+    display: flex;
+    align-items: center;
+  }
+  
+  .societyName {
+    font-weight: 600;
+  }
+  
+  .societyInfoBottom {
+    margin-top: 10px;
+  }
+  
+  .societyInfoItem {
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .societyInfoValue {
+    font-weight: 300;
+  }
+  
+  .societyBottom {
+    padding: 20px;
+    margin: 20px;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  }
+  
+  .societyForm {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .societyFormLeft {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .societyFormLeft > label {
+    margin-bottom: 10px;
+    color: gray;
+  }
+  
+  .societyFormLeft > input {
+    margin-bottom: 10px;
+    width: 150px;
+    border: none;
+    padding: 5px;
+    border-bottom: 1px solid gray;
+  }
+  
+  .societyFormLeft >select{
+    margin-bottom: 10px;
+  }
+  
+  .societyUploadImg{
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .societyFormRight{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  
+  .societyUpload{
+    display: flex;
+    align-items: center;
+  }
+  
+  .societyButton{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: darkblue;
+    color:white;
+    font-weight: 600;
+    cursor: pointer;
+
+
+  }

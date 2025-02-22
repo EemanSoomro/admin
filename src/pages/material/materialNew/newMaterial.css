@@ -1,0 +1,46 @@
+.newMaterial {
+    flex: 4;
+  }
+  
+  .addMaterialForm {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .addMaterialItem {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 2rem;
+  }
+  
+  .addMaterialItem > label {
+    color: gray;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .addMaterialItem > input {
+    padding: 10px;
+  }
+  
+  .addMaterialItem > select {
+    padding: 10px;
+  }
+  
+  .addMaterialButton {
+    margin-top: 10px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: darkblue;
+    color: white;
+    font-weight: 600;
+    height: 40px;
+    width: 120px;
+    cursor: pointer;
+    align-self: center;
+  }
+  

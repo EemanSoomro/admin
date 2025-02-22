@@ -1,0 +1,130 @@
+.teacher {
+  flex: 4;
+  padding: 20px;
+}
+
+.teacherTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.teacherAddButton {
+  width: 80px;
+  border: none;
+  padding: 5px;
+  background-color: teal;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.teacherTop {
+  display: flex;
+}
+
+.teacherTopLeft,
+.teacherTopRight {
+  flex: 1;
+}
+
+.teacherTopRight {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.teacherInfoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.teacherInfoTop {
+  display: flex;
+  align-items: center;
+}
+
+.teacherName {
+  font-weight: 600;
+}
+
+.teacherInfoBottom {
+  margin-top: 10px;
+}
+
+.teacherInfoItem {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.teacherInfoValue {
+  font-weight: 300;
+}
+
+.teacherBottom {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.teacherForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.teacherFormLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.teacherFormLeft > label {
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.teacherFormLeft > input {
+  margin-bottom: 10px;
+  border: none;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.teacherFormLeft >select{
+  margin-bottom: 10px;
+}
+
+.teacherUploadImg{
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.teacherFormRight{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.teacherUpload{
+  display: flex;
+  align-items: center;
+}
+
+.teacherButton{
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: darkblue;
+  color:white;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -1,0 +1,28 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Over flow y hidden */
+    
+  }
+  
+  html,
+  body {
+      height: 100%;
+  }
+.container{
+    display: flex;
+    margin-top: 10px;
+}
+
+
+.link{
+    text-decoration: none;
+    color: inherit;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+  }
+
+  

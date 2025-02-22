@@ -1,0 +1,45 @@
+.newCourse {
+  flex: 4;
+}
+
+.addCourseForm {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.addCourseItem {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 2rem;
+}
+
+.addCourseItem > label {
+  color: gray;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.addCourseItem > input {
+  padding: 10px;
+}
+
+.addCourseItem > select {
+  padding: 10px;
+}
+
+.addCourseButton {
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+  height: 40px;
+  width: 120px;
+  cursor: pointer;
+  align-self: center;
+}
