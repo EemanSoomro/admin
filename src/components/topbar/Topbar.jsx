@@ -9,7 +9,7 @@ export default function Topbar() {
     <div className="topbar">
       <div className="topbarWrapper">
         <div className="topLeft">
-          <span className="logo">FAST HUB ADMIN</span>
+          <span className="logo">DISCUSSION FORUM ADMIN</span>
         </div>
         <div className="topRight">
           <Btn type="submit" onClick={() => {

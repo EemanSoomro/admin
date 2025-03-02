@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// Get Announcements
-export const getAnnouncements = async (dispatch) => {
+// Get All Announcements (Admin Panel)
+export const getAllAnnouncements = async (dispatch) => {
   dispatch({ type: "GET_ANNOUNCEMENTS_START" });
   try {
-    const res = await axios.get("/announcements");
+    const res = await axios.get("/announcements/admin"); 
     dispatch({ type: "GET_ANNOUNCEMENTS_SUCCESS", payload: res.data });
   } catch (err) {
     dispatch({ type: "GET_ANNOUNCEMENTS_FAILURE" });
@@ -14,29 +14,33 @@ export const getAnnouncements = async (dispatch) => {
 // Create Announcement
 export const createAnnouncement = async (announcement, dispatch) => {
   try {
-    const res = await axios.post("/announcements", announcement);
+    const res = await axios.post("/announcements", { ...announcement, status: "pending" });
     dispatch({ type: "CREATE_ANNOUNCEMENT_SUCCESS", payload: res.data });
+    getAllAnnouncements(dispatch); 
   } catch (err) {
     console.log(err);
   }
 };
 
-// Delete Announcement
+// Approve or Reject Announcement
+export const updateAnnouncementStatus = async (id, status, dispatch) => {
+  try {
+    const res = await axios.put(`/announcements/${id}`, { status });
+    dispatch({ type: "UPDATE_ANNOUNCEMENT_SUCCESS", payload: res.data });
+    getAllAnnouncements(dispatch); 
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// ✅ Fixed Delete Announcement
 export const deleteAnnouncement = async (id, dispatch) => {
   try {
-    await axios.delete(`/announcements/${id}`);
-    dispatch({ type: "DELETE_ANNOUNCEMENT_SUCCESS", payload: id });
+    const res = await axios.delete(`/announcements/${id}`);
+    if (res.status === 200) {
+      dispatch({ type: "DELETE_ANNOUNCEMENT_SUCCESS", payload: id });
+    }
   } catch (err) {
-    console.log(err);
-  }
-};
-
-// Update Announcement
-export const updateAnnouncement = async (id, updatedData, dispatch) => {
-  try {
-    const res = await axios.put(`/announcements/${id}`, updatedData);
-    dispatch({ type: "UPDATE_ANNOUNCEMENT_SUCCESS", payload: res.data });
-  } catch (err) {
-    console.log(err);
+    console.error("Delete Error:", err);
   }
 };
