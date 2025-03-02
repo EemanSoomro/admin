@@ -1,7 +1,7 @@
 import "./announcementsList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { AnnouncementContext } from "../../../context/announcementContext/AnnouncementContext";
 import { getAllAnnouncements, deleteAnnouncement, updateAnnouncementStatus } from "../../../context/announcementContext/apiCalls";
@@ -15,7 +15,7 @@ export default function AnnouncementsList() {
   }, [dispatch]);
 
   // ✅ Fixed Delete Handler
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this announcement!",
@@ -34,7 +34,6 @@ export default function AnnouncementsList() {
     });
   };
 
-  // ✅ Fixed Edit Button Link
   const columns = [
     { field: "type", headerName: "Type", width: 200 },
     { field: "subject", headerName: "Subject", width: 500 },
@@ -46,9 +45,7 @@ export default function AnnouncementsList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/announcement/edit/${params.row._id}`} state={{ announcement: params.row }}>
-            <button className="announcementListEdit">Edit</button>
-          </Link>
+          
           <button className="announcementApprove" onClick={() => updateAnnouncementStatus(params.row._id, "approved", dispatch)}>Approve</button>
           <button className="announcementReject" onClick={() => updateAnnouncementStatus(params.row._id, "rejected", dispatch)}>Reject</button>
           <DeleteOutline className="announcementListDelete" onClick={() => handleDelete(params.row._id)} />
@@ -63,7 +60,7 @@ export default function AnnouncementsList() {
         rows={announcements}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
+        pageSize={10}
         getRowId={(r) => r._id}
         checkboxSelection
       />

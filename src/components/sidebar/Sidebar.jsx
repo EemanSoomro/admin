@@ -19,6 +19,7 @@ export default function Sidebar() {
           </ul>
         </div>
 
+        {/* Societies Section */}
         <div className="MenuItem">
           <ul className="sidebarList">
             <Link to="/societies" className="link">
@@ -28,22 +29,6 @@ export default function Sidebar() {
               </li>
             </Link>
             <Link to="/newsociety" className="link">
-              <li className="sidebarListItem">
-                <IoAdd className="sidebarPlusIcon" />
-              </li>
-            </Link>
-          </ul>
-        </div>
-
-        <div className="MenuItem">
-          <ul className="sidebarList">
-            <Link to="/events" className="link">
-              <li className="sidebarListItem">
-                <img src="https://cdn-icons-png.flaticon.com/512/1968/1968790.png" alt="" className="sidebarIcon" />
-                Events
-              </li>
-            </Link>
-            <Link to="/newevent" className="link">
               <li className="sidebarListItem">
                 <IoAdd className="sidebarPlusIcon" />
               </li>
@@ -61,6 +46,23 @@ export default function Sidebar() {
               </li>
             </Link>
             <Link to="/newannouncement" className="link">
+              <li className="sidebarListItem">
+                <IoAdd className="sidebarPlusIcon" />
+              </li>
+            </Link>
+          </ul>
+        </div>
+
+        {/* Projects Section */}
+        <div className="MenuItem">
+          <ul className="sidebarList">
+            <Link to="/projects" className="link">
+              <li className="sidebarListItem">
+                <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" alt="" className="sidebarIcon" />
+                Projects
+              </li>
+            </Link>
+            <Link to="/newproject" className="link">
               <li className="sidebarListItem">
                 <IoAdd className="sidebarPlusIcon" />
               </li>

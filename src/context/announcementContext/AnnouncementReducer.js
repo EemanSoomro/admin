@@ -20,13 +20,18 @@ const AnnouncementReducer = (state, action) => {
         ),
       };
 
-    // ✅ Fixed Delete Reducer
-    case "DELETE_ANNOUNCEMENT_SUCCESS":
-      return { ...state, announcements: state.announcements.filter((ann) => ann._id !== action.payload) };
-
-    default:
-      return state;
-  }
-};
-
-export default AnnouncementReducer;
+      case "DELETE_ANNOUNCEMENT_SUCCESS":
+        return {
+          ...state,
+          announcements: state.announcements.filter((a) => a._id !== action.payload),
+        };
+  
+      case "DELETE_ANNOUNCEMENT_FAILURE":
+        return { ...state, error: true };
+  
+      default:
+        return state;
+    }
+  };
+  
+  export default AnnouncementReducer;

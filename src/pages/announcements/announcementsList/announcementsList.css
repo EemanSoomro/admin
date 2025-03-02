@@ -4,6 +4,10 @@
     background: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     /* ✅ Fix: Set a minimum height to allow more announcements to fit */
+  min-height: 700px; /* Adjust height as needed */
+  max-height: 850vh; /* Prevent overflow beyond viewport */
+  overflow-y: auto; /* Enable scrolling inside the list */
   }
   
   .announcementListItem {

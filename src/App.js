@@ -2,7 +2,7 @@ import {
   Topbar, Sidebar, Home, UserList, User, NewUser, CourseList, Course, NewCourse, 
   TeacherList, Teacher, NewTeacher, MaterialList, Material, NewMaterial, AuthContext, 
   Department, NewDepartment, DepartmentList, SocietyList, NewSociety, Society, Event, 
-  NewEvent, EventList, AnnouncementList,NewAnnouncement
+  NewEvent, EventList, AnnouncementList,NewAnnouncement 
 } from "./pages/AppExportAll";
 
 import { Switch, Route, useHistory, Redirect } from "react-router-dom";
