@@ -1,78 +1,66 @@
 import "./newSociety.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import storage from "../../../firebase/firebase";
 import { createSociety } from "../../../context/societyContext/apiCalls";
 import { SocietyContext } from "../../../context/societyContext/SocietyContext";
-import { useContext } from "react";
-import swal from 'sweetalert';
-import { useHistory } from "react-router-dom";
-// Import Navigate from react-router-dom
+import swal from "sweetalert";
+
 export default function NewSociety() {
-  const History = useHistory();
+  const history = useHistory();
   const { dispatch } = useContext(SocietyContext);
   const [uploaded, setUploaded] = useState(0);
-  const [inputs, setInputs] = useState(null);
+  const [inputs, setInputs] = useState({}); // Empty object to avoid null errors
   const [file, setFile] = useState(null);
   const [background, setBackground] = useState(null);
 
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs((prev) => ({ ...prev, [name]: value }));
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    
+    if (!inputs.name || !inputs.code || !inputs.description) {
+      swal("Error", "All fields are required!", "error");
+      return;
+    }
+
     createSociety(inputs, dispatch);
     resetInputFields();
-    History.push("/");
-
+    history.push("/");
   };
 
   const resetInputFields = () => {
-    setInputs(null);
+    setInputs({});
     setFile(null);
+    setBackground(null);
     setUploaded(0);
   };
 
-
   const upload = (items) => {
-    if (items === null) return;
+    if (items.length === 0) return;
+
     items.forEach((item) => {
-      if (item.file === null) {
-        setUploaded(uploaded + 1);
-        // Go to the next item without returning
-      }
-      else {
-        const FileName = Date.now() + item.label + (item.file ? item.file.name : "");
-        const uploadTask = storage.ref(`/Societys/${FileName}`).put(item.file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          swal({
-            title: "Uploading File",
-            // Round off progress to 2 decimal places
-            text: Math.round(progress) + "%",
-            icon: "success",
-            button: false,
-            timer: 1800
-          })
-          console.log("Upload is " + progress + "% done");
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-            setInputs((prev) => {
-              return { ...prev, [item.label]: url };
-            });
+      if (!item.file) {
+        setUploaded((prev) => prev + 1);
+      } else {
+        const fileName = `${Date.now()}_${item.label}_${item.file.name}`;
+        const uploadTask = storage.ref(`/Societys/${fileName}`).put(item.file);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            swal({ title: "Uploading File", text: `${progress}%`, icon: "success", button: false, timer: 1800 });
+          },
+          (error) => console.error(error),
+          async () => {
+            const url = await uploadTask.snapshot.ref.getDownloadURL();
+            setInputs((prev) => ({ ...prev, [item.label]: url }));
             setUploaded((prev) => prev + 1);
-          });
-        }
-      );
+          }
+        );
       }
     });
   };
@@ -80,17 +68,10 @@ export default function NewSociety() {
   const handleUpload = (e) => {
     e.preventDefault();
     upload([
-      {
-        file: file, label: "picture",
-      },
-      {
-        file: background, label: "background",
-      }
+      { file: file, label: "picture" },
+      { file: background, label: "background" }
     ]);
   };
-  console.log(inputs);
-
-
 
   return (
     <div className="newSociety">
@@ -102,7 +83,7 @@ export default function NewSociety() {
         </div>
         <div className="addSocietyItem">
           <label>Background</label>
-          <input type="file" id="background" name="background" onChange={(e) => setBackground(e.target.files[0])} multiple />
+          <input type="file" id="background" name="background" onChange={(e) => setBackground(e.target.files[0])} />
         </div>
         <div className="addSocietyItem">
           <label>Code</label>
@@ -114,19 +95,13 @@ export default function NewSociety() {
         </div>
         <div className="addSocietyItem">
           <label>Description</label>
-          {/* TeaxtArea */}
-          <textarea placeholder="" rows="2" id="description" name="description" onChange={handleChange} />
+          <textarea placeholder="Enter description" rows="2" id="description" name="description" onChange={handleChange} />
         </div>
-        {uploaded > 2 ? (
-          <button className="addSocietyButton" onClick={handleSubmit}>
-            Create
-          </button>
+        {uploaded >= 2 ? (
+          <button className="addSocietyButton" onClick={handleSubmit}>Create</button>
         ) : (
-          <button className="addSocietyButton" onClick={handleUpload}>
-            Upload
-          </button>
+          <button className="addSocietyButton" onClick={handleUpload}>Upload</button>
         )}
-
       </form>
     </div>
   );

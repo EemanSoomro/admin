@@ -2,7 +2,10 @@ import {
   Topbar, Sidebar, Home, UserList, User, NewUser, CourseList, Course, NewCourse, 
   TeacherList, Teacher, NewTeacher, MaterialList, Material, NewMaterial, AuthContext, 
   Department, NewDepartment, DepartmentList, SocietyList, NewSociety, Society, Event, 
-  NewEvent, EventList, AnnouncementList,NewAnnouncement 
+  NewEvent, EventList, AnnouncementList, NewAnnouncement, 
+
+  // ✅ Project Components Added
+  ProjectList, Project, NewProject 
 } from "./pages/AppExportAll";
 
 import { Switch, Route, useHistory, Redirect } from "react-router-dom";
@@ -70,10 +73,14 @@ function App() {
             <Route path="/materials"><MaterialList user={user} /></Route>
             <Route path="/material/:materialId"><Material user={user} /></Route>
             <Route path="/newmaterial"><NewMaterial user={user} /></Route>
+
+            {/* ✅ Project Routes */}
+            <Route path="/projects"><ProjectList /></Route>
+            <Route path="/project/:projectId"><Project /></Route>
+            <Route path="/newproject"><NewProject /></Route>
             
-            {/* Announcement Routes */}
+            {/* ✅ Announcement Routes */}
             <Route path="/announcements"><AnnouncementList /></Route>
-            {/* <Route path="/announcement/:announcementId"><NewAnnouncement /></Route> */}
             <Route path="/newannouncement"><NewAnnouncement /></Route>
           </div>
         </>

@@ -25,14 +25,20 @@ import EventList from "./event/eventList/EventList";
 import AnnouncementList from "./announcements/announcementsList/AnnouncementsList";  
 import NewAnnouncement from "./announcements/announcementNew/announcementNew";  
 
+// ✅ Project Files Added
+import Project from "./project/ProjectEdit";
+import ProjectList from "./project/ProjectList";
+import NewProject from "./project/ProjectNew";
+
 import { AuthContext } from "../context/authContext/AuthContext";
 
-// ✅ Full Export List with Announcement Components
+// ✅ Full Export List with Project & Announcement Components
 export { 
     Topbar, Sidebar, Home, UserList, User, NewUser, 
     CourseList, Course, NewCourse, TeacherList, Teacher, NewTeacher, 
     MaterialList, Material, NewMaterial, Department, NewDepartment, DepartmentList, 
     SocietyList, NewSociety, Society, Event, NewEvent, EventList, 
-     AnnouncementList, NewAnnouncement,
+    AnnouncementList, NewAnnouncement, 
+    ProjectList, Project, NewProject,  // ✅ Project components added 
     AuthContext 
 };

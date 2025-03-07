@@ -8,9 +8,10 @@ import { MaterialContextProvider } from "./context/materialContext/MaterialConte
 import { SocietyContextProvider } from "./context/societyContext/SocietyContext";
 import { EventContextProvider } from "./context/eventContext/EventContext";
 import { AnnouncementContextProvider } from "./context/announcementContext/AnnouncementContext";
+import { ProjectContextProvider } from "./context/projectContext/ProjectContext";  // ✅ Project Context Added
 import { BrowserRouter } from "react-router-dom";
-ReactDOM.render(
 
+ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
@@ -20,7 +21,9 @@ ReactDOM.render(
               <MaterialContextProvider>
                 <SocietyContextProvider>
                   <EventContextProvider>
-                    <App />
+                    <ProjectContextProvider> {/* ✅ Project Context Wrap Added */}
+                      <App />
+                    </ProjectContextProvider>
                   </EventContextProvider>
                 </SocietyContextProvider>
               </MaterialContextProvider>

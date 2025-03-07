@@ -1,14 +1,18 @@
-import { getSocietysStart, getSocietysFailure, getSocietysSuccess, deleteSocietyStart, deleteSocietyFailure, deleteSocietySuccess,createSocietyFailure,createSocietyStart,createSocietySuccess,updateSocietyStart,updateSocietyFailure,updateSocietySuccess } from "./SocietyActions";
-import axios from 'axios'
+import { 
+    getSocietysStart, getSocietysFailure, getSocietysSuccess, 
+    deleteSocietyStart, deleteSocietyFailure, deleteSocietySuccess, 
+    createSocietyFailure, createSocietyStart, createSocietySuccess, 
+    updateSocietyStart, updateSocietyFailure, updateSocietySuccess 
+} from "./SocietyActions";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API + "/societies";
+const TOKEN = "Bearer " + JSON.parse(localStorage.getItem("user"))?.accessToken;
 
 export const getSocietys = async (dispatch) => {
-    dispatch(getSocietysStart);
+    dispatch(getSocietysStart());
     try {
-        const res = await axios.get(process.env.REACT_APP_API + "/societies", {
-            headers: {
-                token: "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
-            },
-        });
+        const res = await axios.get(API_URL, { headers: { token: TOKEN } });
         dispatch(getSocietysSuccess(res.data));
     } catch (err) {
         dispatch(getSocietysFailure());
@@ -16,49 +20,31 @@ export const getSocietys = async (dispatch) => {
 };
 
 export const createSociety = async (society, dispatch) => {
-    dispatch(createSocietyStart);
+    dispatch(createSocietyStart());
     try {
-        console.log(society);
-        const res = await axios.post(process.env.REACT_APP_API + "/societies", society, {
-            headers: {
-                token: "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
-            },
-        });
+        const res = await axios.post(API_URL, society, { headers: { token: TOKEN } });
         dispatch(createSocietySuccess(res.data));
     } catch (err) {
         dispatch(createSocietyFailure());
     }
 };
 
-// updateSociety using axios, dispatching updateSocietyStart, updateSocietySuccess, updateSocietyFailure, and passing in Society id, and Society object to update
 export const updateSociety = async (id, society, dispatch) => {
-    dispatch(updateSocietyStart);
+    dispatch(updateSocietyStart());
     try {
-        const res = await axios.put(process.env.REACT_APP_API + "/societies/" + id, society, {
-            headers: {
-                token: "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
-            },
-        });
+        const res = await axios.put(`${API_URL}/${id}`, society, { headers: { token: TOKEN } });
         dispatch(updateSocietySuccess(res.data));
     } catch (err) {
         dispatch(updateSocietyFailure());
     }
 };
 
-
-
 export const deleteSociety = async (societyId, dispatch) => {
-    dispatch(deleteSocietyStart);
+    dispatch(deleteSocietyStart());
     try {
-        await axios.delete(process.env.REACT_APP_API + "/societies/" + societyId, {
-            headers: {
-                token: "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
-            },
-        });
+        await axios.delete(`${API_URL}/${societyId}`, { headers: { token: TOKEN } });
         dispatch(deleteSocietySuccess(societyId));
     } catch (err) {
         dispatch(deleteSocietyFailure());
     }
 };
-
-

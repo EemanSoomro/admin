@@ -1,0 +1,41 @@
+/* Styles for Project New Page */
+.project-new-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.project-new-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-new-form label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.project-new-form input, .project-new-form textarea {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.project-new-btn {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.project-new-btn:hover {
+    background-color: #218838;
+}
