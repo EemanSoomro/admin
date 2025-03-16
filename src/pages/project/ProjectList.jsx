@@ -12,13 +12,16 @@ const ProjectList = () => {
     fetchProjects(dispatch);
   }, [dispatch]);
 
+  // ✅ Ensure projects is an array
+  console.log("Projects from Context:", projects);
+
+  const projectArray = Array.isArray(projects.data) ? projects.data : []; // 🛠 Fix here!
+  console.log("Final Projects Array:", projectArray);
+
   // ✅ Calculate indexes for pagination
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
-
-  // ✅ Handle pagination
-  const totalPages = Math.ceil(projects.length / projectsPerPage);
+  const currentProjects = projectArray.slice(indexOfFirstProject, indexOfLastProject);
 
   return (
     <div className="projectList">
@@ -51,25 +54,6 @@ const ProjectList = () => {
           )}
         </tbody>
       </table>
-
-      {/* ✅ Pagination Controls */}
-      {projects.length > projectsPerPage && (
-        <div className="pagination">
-          <button 
-            onClick={() => setCurrentPage(currentPage - 1)} 
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button 
-            onClick={() => setCurrentPage(currentPage + 1)} 
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </div>
-      )}
     </div>
   );
 };

@@ -11,20 +11,21 @@ export default function ProjectNew() {
   const { dispatch } = useContext(ProjectContext);
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState(null);
-  const [uploaded, setUploaded] = useState(0);
+  const [uploaded, setUploaded] = useState(false);
 
+  // Handle Input Change
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  // ✅ Handle File Upload First
+  const handleUpload = async (e) => {
     e.preventDefault();
-    createProject(inputs, dispatch);
-    history.push("/");
-  };
+    if (!file) {
+      swal("No file selected", "Please select an image file", "error");
+      return;
+    }
 
-  const handleUpload = (e) => {
-    e.preventDefault();
     const fileName = `${Date.now()}_${file.name}`;
     const uploadTask = storage.ref(`/Projects/${fileName}`).put(file);
 
@@ -32,16 +33,47 @@ export default function ProjectNew() {
       "state_changed",
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        swal({ title: "Uploading File", text: `${Math.round(progress)}%`, icon: "success", button: false, timer: 1800 });
-      },
-      (error) => console.log(error),
-      () => {
-        uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-          setInputs((prev) => ({ ...prev, picture: url })); // ✅ Make sure 'picture' matches the backend schema
-          setUploaded(uploaded + 1);
+        swal({
+          title: "Uploading File",
+          text: `${Math.round(progress)}%`,
+          icon: "success",
+          button: false,
+          timer: 1800
         });
+      },
+      (error) => console.error("Upload error:", error),
+      async () => {
+        // ✅ Image uploaded successfully
+        const url = await uploadTask.snapshot.ref.getDownloadURL();
+        setInputs((prev) => ({ ...prev, picture: url })); // ✅ Ensure 'picture' matches backend schema
+        setUploaded(true);
       }
     );
+  };
+
+  // ✅ Handle Project Creation After Upload
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!uploaded) {
+      swal("Upload Required", "Please upload an image before submitting", "error");
+      return;
+    }
+
+    const projectData = {
+      ...inputs,
+      admin: "664b1283f0299c021b4a3df7", // ✅ Replace with dynamic admin ID
+    };
+
+    console.log("📤 Sending Data:", projectData);
+
+    try {
+      await createProject(projectData, dispatch);
+      swal("Success!", "Project added successfully!", "success");
+      history.push("/");
+    } catch (error) {
+      console.error("❌ Error creating project:", error);
+      swal("Error", "Failed to add project", "error");
+    }
   };
 
   return (
