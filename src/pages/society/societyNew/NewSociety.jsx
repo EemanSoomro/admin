@@ -58,11 +58,11 @@ export default function NewSociety() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!inputs.name || !inputs.code || !inputs.description) {
+    if (!inputs.name || !inputs.code || !inputs.description || !inputs.mentor) {
       swal("Error", "All fields are required!", "error");
       return;
     }
-
+    console.log("Submitting Data:", inputs); // Debugging log
     // Call upload function for files
     upload([
       { file: file, label: "picture" },
@@ -123,6 +123,16 @@ export default function NewSociety() {
             placeholder="Dramatics and Extra-Curricular Society"
             id="name"
             name="name"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="addSocietyItem">
+          <label>Mentor</label>
+          <input
+            type="text"
+            placeholder="Enter Mentor's Name"
+            id="mentor"
+            name="mentor"
             onChange={handleChange}
           />
         </div>

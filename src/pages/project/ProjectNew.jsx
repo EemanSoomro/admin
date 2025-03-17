@@ -11,21 +11,23 @@ export default function ProjectNew() {
   const { dispatch } = useContext(ProjectContext);
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState(null);
-  const [uploaded, setUploaded] = useState(false);
 
   // Handle Input Change
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Handle File Upload
-  const handleUpload = async (e) => {
+  // Handle Submit (File Upload + Project Save Together)
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if file is selected
     if (!file) {
       swal("No file selected", "Please select an image file", "error");
       return;
     }
 
+    // Upload image file first
     const formData = new FormData();
     formData.append("file", file);
 
@@ -36,46 +38,25 @@ export default function ProjectNew() {
         },
       });
 
-      // After successful upload, get the image URL
-      const { url } = res.data;
-      setInputs((prev) => ({ ...prev, picture: url }));
-      setUploaded(true);
+      const { url } = res.data; // Image URL after successful upload
 
-      swal("Success", "File uploaded successfully", "success");
-    } catch (error) {
-      console.error("Upload error:", error);
-      swal("Error", "File upload failed", "error");
-    }
-  };
-
-  // Handle Project Creation After Upload
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!uploaded) {
-      swal("Upload Required", "Please upload an image before submitting", "error");
-      return;
-    }
-
-    const projectData = {
-      ...inputs,
-    };
-
-    console.log("📤 Sending Data:", projectData);
-
-    try {
+      // Now create project with uploaded image URL
+      const projectData = { ...inputs, picture: url };
       await createProject(projectData, dispatch);
+
       swal("Success!", "Project added successfully!", "success");
       history.push("/");
+
     } catch (error) {
-      console.error("❌ Error creating project:", error);
-      swal("Error", "Failed to add project", "error");
+      console.error("❌ Error:", error);
+      swal("Error", "Something went wrong!", "error");
     }
   };
 
   return (
     <div className="projectNew">
       <h1 className="addProjectTitle">New Project</h1>
-      <form className="addProjectForm">
+      <form className="addProjectForm" onSubmit={handleSubmit}>
         <label>Project Name</label>
         <input type="text" placeholder="Enter project name" name="name" onChange={handleChange} />
 
@@ -109,19 +90,15 @@ export default function ProjectNew() {
         <label>Status</label>
         <select name="status" onChange={handleChange}>
           <option value="In Progress">In Progress</option>
-          <option value="completed">Completed</option>
-          <option value="planned">Planned</option>
-          <option value="canceled">Canceled</option>
+          <option value="Completed">Completed</option>
+          <option value="Planned">Planned</option>
+          <option value="Canceled">Canceled</option>
         </select>
 
         <label>Image</label>
         <input type="file" onChange={(e) => setFile(e.target.files[0])} />
 
-        {uploaded ? (
-          <button className="addProjectButton" onClick={handleSubmit}>Create</button>
-        ) : (
-          <button className="addProjectButton" onClick={handleUpload}>Upload</button>
-        )}
+        <button className="addProjectButton" type="submit">Create</button>
       </form>
     </div>
   );
