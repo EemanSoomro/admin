@@ -18,7 +18,7 @@ export default function ProjectNew() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // ✅ Handle File Upload First
+  // Handle File Upload
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!file) {
@@ -41,17 +41,20 @@ export default function ProjectNew() {
           timer: 1800
         });
       },
-      (error) => console.error("Upload error:", error),
+      (error) => {
+        console.error("Upload error:", error);
+        swal("Error", "File upload failed", "error");
+      },
       async () => {
-        // ✅ Image uploaded successfully
+        // Image uploaded successfully
         const url = await uploadTask.snapshot.ref.getDownloadURL();
-        setInputs((prev) => ({ ...prev, picture: url })); // ✅ Ensure 'picture' matches backend schema
+        setInputs((prev) => ({ ...prev, picture: url }));
         setUploaded(true);
       }
     );
   };
 
-  // ✅ Handle Project Creation After Upload
+  // Handle Project Creation After Upload
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!uploaded) {
@@ -61,7 +64,6 @@ export default function ProjectNew() {
 
     const projectData = {
       ...inputs,
-      admin: "664b1283f0299c021b4a3df7", // ✅ Replace with dynamic admin ID
     };
 
     console.log("📤 Sending Data:", projectData);

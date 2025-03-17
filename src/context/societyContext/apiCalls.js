@@ -6,13 +6,13 @@ import {
 } from "./SocietyActions";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API + "/societies";
+const BASE_URL = "http://localhost:8800/api/societies"; // ✅ Set backend base URL
 const TOKEN = "Bearer " + JSON.parse(localStorage.getItem("user"))?.accessToken;
 
 export const getSocietys = async (dispatch) => {
     dispatch(getSocietysStart());
     try {
-        const res = await axios.get(API_URL, { headers: { token: TOKEN } });
+        const res = await axios.get(BASE_URL, { headers: { token: TOKEN } });
         dispatch(getSocietysSuccess(res.data));
     } catch (err) {
         dispatch(getSocietysFailure());
@@ -22,17 +22,21 @@ export const getSocietys = async (dispatch) => {
 export const createSociety = async (society, dispatch) => {
     dispatch(createSocietyStart());
     try {
-        const res = await axios.post(API_URL, society, { headers: { token: TOKEN } });
+        console.log("Sending request to create society:", society); // Log the data being sent
+        const res = await axios.post(BASE_URL, society, { headers: { token: TOKEN } });
+        console.log("Response from server:", res.data); // Log the response from the server
         dispatch(createSocietySuccess(res.data));
     } catch (err) {
+        console.error("Error creating society:", err); // Log the error if there's one
         dispatch(createSocietyFailure());
     }
 };
 
+
 export const updateSociety = async (id, society, dispatch) => {
     dispatch(updateSocietyStart());
     try {
-        const res = await axios.put(`${API_URL}/${id}`, society, { headers: { token: TOKEN } });
+        const res = await axios.put(`${BASE_URL}/${id}`, society, { headers: { token: TOKEN } });
         dispatch(updateSocietySuccess(res.data));
     } catch (err) {
         dispatch(updateSocietyFailure());
@@ -42,7 +46,7 @@ export const updateSociety = async (id, society, dispatch) => {
 export const deleteSociety = async (societyId, dispatch) => {
     dispatch(deleteSocietyStart());
     try {
-        await axios.delete(`${API_URL}/${societyId}`, { headers: { token: TOKEN } });
+        await axios.delete(`${BASE_URL}/${societyId}`, { headers: { token: TOKEN } });
         dispatch(deleteSocietySuccess(societyId));
     } catch (err) {
         dispatch(deleteSocietyFailure());

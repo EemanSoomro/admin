@@ -82,6 +82,7 @@ function App() {
             {/* ✅ Announcement Routes */}
             <Route path="/announcements"><AnnouncementList /></Route>
             <Route path="/newannouncement"><NewAnnouncement /></Route>
+            
           </div>
         </>
       )}
