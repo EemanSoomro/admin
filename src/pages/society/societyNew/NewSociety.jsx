@@ -18,64 +18,75 @@ export default function NewSociety() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const upload = (items) => {
+  const upload = async (items) => {
     if (items.length === 0) return;
-
-    items.forEach((item) => {
-      if (!item.file) {
-        setUploaded((prev) => prev + 1);
-      } else {
-        const fileName = `${Date.now()}_${item.label}_${item.file.name}`;
-        const uploadTask = storage.ref(`/Societys/${fileName}`).put(item.file);
-
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  
+    let uploadedFiles = {};
+  
+    await Promise.all(
+      items.map((item) => {
+        return new Promise((resolve, reject) => {
+          if (!item.file) {
+            resolve();
+          } else {
+            const fileName = `${Date.now()}_${item.label}_${item.file.name}`;
+            const uploadTask = storage.ref(`/Societys/${fileName}`).put(item.file);
+  
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                console.log(`Upload progress: ${progress}%`);
+              },
+              (error) => {
+                console.error(error);
+                swal("Error", "There was an issue uploading the file", "error");
+                reject(error);
+              },
+              async () => {
+                const url = await uploadTask.snapshot.ref.getDownloadURL();
+                console.log("File uploaded, URL: ", url);
+                uploadedFiles[item.label] = url;
+                resolve();
+              }
             );
-            console.log(`Upload progress: ${progress}%`);
-          },
-          (error) => {
-            console.error(error);
-            swal("Error", "There was an issue uploading the file", "error");
-          },
-          async () => {
-            const url = await uploadTask.snapshot.ref.getDownloadURL();
-            console.log("File uploaded, URL: ", url); // Log the URL
-            setInputs((prev) => ({ ...prev, [item.label]: url }));
-            setUploaded((prev) => prev + 1);
-
-            if (uploaded === items.length - 1) {
-              swal("Success", "Society Successfully Added!", "success");
-            }
           }
-        );
-      }
-    });
+        });
+      })
+    );
+  
+    return uploadedFiles;
   };
-
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!inputs.name || !inputs.code || !inputs.description || !inputs.mentor) {
       swal("Error", "All fields are required!", "error");
       return;
     }
-    console.log("Submitting Data:", inputs); // Debugging log
-    // Call upload function for files
-    upload([
-      { file: file, label: "picture" },
-      { file: background, label: "background" },
-    ]);
-
-    // Wait for the upload process to complete
-    setTimeout(() => {
+  
+    console.log("Submitting Data:", inputs);
+  
+    try {
+      const uploadedFiles = await upload([
+        { file: file, label: "picture" },
+        { file: background, label: "background" },
+      ]);
+  
+      // Merge uploaded file URLs into inputs
+      setInputs((prev) => ({ ...prev, ...uploadedFiles }));
+  
       // Proceed to create society once files are uploaded
-      createSociety(inputs, dispatch);
+      await createSociety({ ...inputs, ...uploadedFiles }, dispatch);
       resetInputFields();
       history.push("/");
-    }, 2000); // Wait for 2 seconds to show the success message
+      swal("Success", "Society Successfully Added!", "success");
+    } catch (error) {
+      console.error("Upload failed", error);
+    }
   };
 
   const resetInputFields = () => {
