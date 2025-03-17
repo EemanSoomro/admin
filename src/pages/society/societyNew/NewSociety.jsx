@@ -20,9 +20,9 @@ export default function NewSociety() {
 
   const upload = async (items) => {
     if (items.length === 0) return;
-  
+
     let uploadedFiles = {};
-  
+
     await Promise.all(
       items.map((item) => {
         return new Promise((resolve, reject) => {
@@ -30,8 +30,10 @@ export default function NewSociety() {
             resolve();
           } else {
             const fileName = `${Date.now()}_${item.label}_${item.file.name}`;
-            const uploadTask = storage.ref(`/Societys/${fileName}`).put(item.file);
-  
+            const uploadTask = storage
+              .ref(`/Societys/${fileName}`)
+              .put(item.file);
+
             uploadTask.on(
               "state_changed",
               (snapshot) => {
@@ -56,29 +58,29 @@ export default function NewSociety() {
         });
       })
     );
-  
+
     return uploadedFiles;
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!inputs.name || !inputs.code || !inputs.description || !inputs.mentor) {
       swal("Error", "All fields are required!", "error");
       return;
     }
-  
+
     console.log("Submitting Data:", inputs);
-  
+
     try {
       const uploadedFiles = await upload([
         { file: file, label: "picture" },
         { file: background, label: "background" },
       ]);
-  
+
       // Merge uploaded file URLs into inputs
       setInputs((prev) => ({ ...prev, ...uploadedFiles }));
-  
+
       // Proceed to create society once files are uploaded
       await createSociety({ ...inputs, ...uploadedFiles }, dispatch);
       resetInputFields();
