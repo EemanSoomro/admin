@@ -1,9 +1,9 @@
 import "./projectNew.css";
 import { useState, useContext } from "react";
-import storage from "../../firebase/firebase";
+import axios from "axios";
 import { createProject } from "../../context/projectContext/apiCalls";
 import { ProjectContext } from "../../context/projectContext/ProjectContext";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 
 export default function ProjectNew() {
@@ -26,32 +26,26 @@ export default function ProjectNew() {
       return;
     }
 
-    const fileName = `${Date.now()}_${file.name}`;
-    const uploadTask = storage.ref(`/Projects/${fileName}`).put(file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        swal({
-          title: "Uploading File",
-          text: `${Math.round(progress)}%`,
-          icon: "success",
-          button: false,
-          timer: 1800
-        });
-      },
-      (error) => {
-        console.error("Upload error:", error);
-        swal("Error", "File upload failed", "error");
-      },
-      async () => {
-        // Image uploaded successfully
-        const url = await uploadTask.snapshot.ref.getDownloadURL();
-        setInputs((prev) => ({ ...prev, picture: url }));
-        setUploaded(true);
-      }
-    );
+    try {
+      const res = await axios.post("http://localhost:8800/api/projects", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // After successful upload, get the image URL
+      const { url } = res.data;
+      setInputs((prev) => ({ ...prev, picture: url }));
+      setUploaded(true);
+
+      swal("Success", "File uploaded successfully", "success");
+    } catch (error) {
+      console.error("Upload error:", error);
+      swal("Error", "File upload failed", "error");
+    }
   };
 
   // Handle Project Creation After Upload
