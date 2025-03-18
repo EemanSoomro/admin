@@ -4,57 +4,43 @@ import { useHistory } from "react-router-dom";
 import { createSociety } from "../../../context/societyContext/apiCalls";
 import { SocietyContext } from "../../../context/societyContext/SocietyContext";
 import swal from "sweetalert";
-import storage from "../../../firebase/firebase"; // Correct Firebase import
+import storage from "../../../firebase/firebase";
 
 export default function NewSociety() {
   const history = useHistory();
   const { dispatch } = useContext(SocietyContext);
-  const [inputs, setInputs] = useState({}); // Empty object to avoid null errors
+  const [inputs, setInputs] = useState({});
   const [file, setFile] = useState(null);
   const [background, setBackground] = useState(null);
-  const [uploaded, setUploaded] = useState(0); // Track number of uploaded files
+  const [loading, setLoading] = useState(false); // ✅ Loading state added
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const upload = async (items) => {
-    if (items.length === 0) return;
+    if (items.length === 0) return {};
 
-    let uploadedFiles = {};
+    const uploadedFiles = {};
 
     await Promise.all(
-      items.map((item) => {
-        return new Promise((resolve, reject) => {
-          if (!item.file) {
-            resolve();
-          } else {
-            const fileName = `${Date.now()}_${item.label}_${item.file.name}`;
-            const uploadTask = storage
-              .ref(`/Societys/${fileName}`)
-              .put(item.file);
+      items.map(async (item) => {
+        if (!item.file) return;
 
-            uploadTask.on(
-              "state_changed",
-              (snapshot) => {
-                const progress = Math.round(
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                console.log(`Upload progress: ${progress}%`);
-              },
-              (error) => {
-                console.error(error);
-                swal("Error", "There was an issue uploading the file", "error");
-                reject(error);
-              },
-              async () => {
-                const url = await uploadTask.snapshot.ref.getDownloadURL();
-                console.log("File uploaded, URL: ", url);
-                uploadedFiles[item.label] = url;
-                resolve();
-              }
-            );
-          }
+        const fileName = `${Date.now()}_${item.label}_${item.file.name}`;
+        const uploadTask = storage.ref(`/Societys/${fileName}`).put(item.file);
+
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            null,
+            (error) => reject(error),
+            async () => {
+              const url = await uploadTask.snapshot.ref.getDownloadURL();
+              uploadedFiles[item.label] = url;
+              resolve();
+            }
+          );
         });
       })
     );
@@ -64,108 +50,67 @@ export default function NewSociety() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!inputs.name || !inputs.code || !inputs.description || !inputs.mentor) {
       swal("Error", "All fields are required!", "error");
       return;
     }
 
-    console.log("Submitting Data:", inputs);
+    setLoading(true); // ✅ Start loading when form is submitted
 
     try {
       const uploadedFiles = await upload([
-        { file: file, label: "picture" },
+        { file, label: "picture" },
         { file: background, label: "background" },
       ]);
 
-      // Merge uploaded file URLs into inputs
-      setInputs((prev) => ({ ...prev, ...uploadedFiles }));
-
-      // Proceed to create society once files are uploaded
-      await createSociety({ ...inputs, ...uploadedFiles }, dispatch);
-      resetInputFields();
-      history.push("/");
+      const newSocietyData = { ...inputs, ...uploadedFiles };
+      await createSociety(newSocietyData, dispatch);
       swal("Success", "Society Successfully Added!", "success");
+
+      setInputs({});
+      setFile(null);
+      setBackground(null);
+      history.push("/");
     } catch (error) {
       console.error("Upload failed", error);
+      swal("Error", "Something went wrong!", "error");
+    } finally {
+      setLoading(false); // ✅ Stop loading after success/error
     }
-  };
-
-  const resetInputFields = () => {
-    setInputs({});
-    setFile(null);
-    setBackground(null);
   };
 
   return (
     <div className="newSociety">
       <h1 className="addSocietyTitle">New Society</h1>
-      <form className="addSocietyForm">
+      <form className="addSocietyForm" onSubmit={handleSubmit}>
         <div className="addSocietyItem">
           <label>Image</label>
-          <input
-            type="file"
-            id="picture"
-            name="picture"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
+          <input type="file" id="picture" name="picture" onChange={(e) => setFile(e.target.files[0])} />
         </div>
         <div className="addSocietyItem">
           <label>Background</label>
-          <input
-            type="file"
-            id="background"
-            name="background"
-            onChange={(e) => setBackground(e.target.files[0])}
-          />
+          <input type="file" id="background" name="background" onChange={(e) => setBackground(e.target.files[0])} />
         </div>
         <div className="addSocietyItem">
           <label>Code</label>
-          <input
-            type="text"
-            placeholder="DECS"
-            id="code"
-            name="code"
-            onChange={handleChange}
-          />
+          <input type="text" placeholder="DECS" id="code" name="code" onChange={handleChange} />
         </div>
         <div className="addSocietyItem">
           <label>Name</label>
-          <input
-            type="text"
-            placeholder="Dramatics and Extra-Curricular Society"
-            id="name"
-            name="name"
-            onChange={handleChange}
-          />
+          <input type="text" placeholder="Dramatics and Extra-Curricular Society" id="name" name="name" onChange={handleChange} />
         </div>
         <div className="addSocietyItem">
           <label>Mentor</label>
-          <input
-            type="text"
-            placeholder="Enter Mentor's Name"
-            id="mentor"
-            name="mentor"
-            onChange={handleChange}
-          />
+          <input type="text" placeholder="Enter Mentor's Name" id="mentor" name="mentor" onChange={handleChange} />
         </div>
         <div className="addSocietyItem">
           <label>Description</label>
-          <textarea
-            placeholder="Enter description"
-            rows="2"
-            id="description"
-            name="description"
-            onChange={handleChange}
-          />
+          <textarea placeholder="Enter description" rows="2" id="description" name="description" onChange={handleChange} />
         </div>
-        <button className="addSocietyButton" onClick={handleSubmit}>
-          Create
+        <button type="submit" className="addSocietyButton" disabled={loading}>
+          {loading ? "Creating..." : "Create"} {/* ✅ Button text changes when loading */}
         </button>
       </form>
-
-      {/* Display uploaded image */}
-      {inputs.picture && <img src={inputs.picture} alt="Uploaded" />}
     </div>
   );
 }
